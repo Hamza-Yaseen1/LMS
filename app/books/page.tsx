@@ -1,4 +1,3 @@
-// app/books/page.tsx
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,13 +11,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-
-/**
- * Quick notes
- * - Requires: `npm i lucide-react framer-motion`
- * - Tailwind recommended for styles.
- * - Uses your existing /api/books (GET, POST) from Phase 2.
- */
 
 type Book = {
   id: number;
@@ -104,6 +96,37 @@ export default function BooksPage() {
       setSortKey(key);
       setSortDir("asc");
     }
+  }
+
+  // NEW: Borrow handler (asks for memberId + optional due date)
+  async function borrow(bookId: number) {
+    const memberIdStr = window.prompt("Enter Member ID to borrow this book:");
+    if (!memberIdStr) return;
+    const memberId = Number(memberIdStr);
+    if (!Number.isFinite(memberId) || memberId <= 0) {
+      alert("Invalid Member ID");
+      return;
+    }
+    const dueDate = window.prompt("Optional: Due date (YYYY-MM-DD), or leave blank:");
+    const dueAt =
+      (dueDate && /^\d{4}-\d{2}-\d{2}$/.test(dueDate)) ? `${dueDate} 00:00:00` : null;
+
+    const res = await fetch("/api/issues", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ memberId, bookId, dueAt }),
+    });
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      alert(e.error || "Issue failed");
+      return;
+    }
+
+    alert("Book issued successfully.");
+    // Optional: refresh book list (if you display availability elsewhere)
+    fetchBooks();
+    // Member’s history is now updated; view it on /members/{memberId} or /members/{memberId}/history
   }
 
   return (
@@ -231,7 +254,7 @@ export default function BooksPage() {
             <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {paginated.map((b) => (
-                  <BookCard key={b.id} book={b} />
+                  <BookCard key={b.id} book={b} onBorrow={() => borrow(b.id)} />
                 ))}
               </div>
 
@@ -270,7 +293,13 @@ export default function BooksPage() {
   );
 }
 
-function BookCard({ book }: { book: Book }) {
+function BookCard({
+  book,
+  onBorrow, // NEW
+}: {
+  book: Book;
+  onBorrow?: () => void; // NEW
+}) {
   const { title, author, isbn } = book;
   return (
     <motion.div
@@ -299,6 +328,19 @@ function BookCard({ book }: { book: Book }) {
           <span className="font-medium">{isbn || "—"}</span>
         </div>
       </div>
+
+      {/* NEW: Borrow button (matches existing button style) */}
+      {onBorrow && (
+        <div className="mt-3">
+          <button
+            onClick={onBorrow}
+            className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm hover:bg-slate-100"
+            title="Borrow this book"
+          >
+            Borrow for Member
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 }

@@ -74,7 +74,7 @@ export default function MembersPage() {
                 <td className="p-2 border">{m.email || "—"}</td>
                 <td className="p-2 border">{m.phone || "—"}</td>
                 <td className="p-2 border space-x-2">
-                  <a className="underline" href={`/members/${m.id}`}>Edit</a>
+                  <a className="underline" href={`/members/${m.id}`}>Details</a>
                   <a className="underline" href={`/members/${m.id}/history`}>History</a>
                   <button className="text-red-600" onClick={() => remove(m.id)}>Delete</button>
                 </td>
