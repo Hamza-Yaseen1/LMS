@@ -67,7 +67,7 @@ export default function MembersPage() {
             </tr>
           </thead>
           <tbody>
-            {members.map(m => (
+            {members.sort((a, b) => a.id - b.id).map(m => (
               <tr key={m.id}>
                 <td className="p-2 border">{m.id}</td>
                 <td className="p-2 border">{m.fullName}</td>
