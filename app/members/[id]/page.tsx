@@ -10,6 +10,8 @@ type Member = {
   email: string;
   phone: string | null;
   address: string | null;
+  department: string | null;
+  semester: string | null;
   createdAt: string;
 };
 
@@ -79,6 +81,8 @@ export default function EditMember() {
         <div><b>Email:</b> {m.email}</div>
         <div><b>Phone:</b> {m.phone ?? '—'}</div>
         <div><b>Address:</b> {m.address ?? '—'}</div>
+        <div><b>Department:</b> {m.department ?? '—'}</div>
+        <div><b>Semester:</b> {m.semester ?? '—'}</div>
         <div><b>Created:</b> {new Date(m.createdAt).toLocaleString()}</div>
       </div>
       {/* ... your form fields bound to `m` ... */}

@@ -10,6 +10,8 @@ export async function GET() {
             email,
             phone,
             address,
+            department,
+            semester,
             created_at AS createdAt
        FROM members
       ORDER BY id DESC`
@@ -18,7 +20,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { fullName, email, phone, address } = await req.json();
+  const { fullName, email, phone, address, department, semester } = await req.json();
 
   if (!fullName) {
     return NextResponse.json({ error: 'fullName is required' }, { status: 400 });
@@ -26,9 +28,9 @@ export async function POST(req: NextRequest) {
 
   const conn = await createConnection();
   const [result]: any = await conn.query(
-    `INSERT INTO members (full_name, email, phone, address)
-     VALUES (?, ?, ?, ?)`,
-    [fullName, email ?? null, phone ?? null, address ?? null]
+    `INSERT INTO members (full_name, email, phone, address, department, semester)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [fullName, email ?? null, phone ?? null, address ?? null, department ?? null, semester ?? null]
   );
 
   const [rows] = await conn.query(
@@ -37,6 +39,8 @@ export async function POST(req: NextRequest) {
             email,
             phone,
             address,
+            department,
+            semester,
             created_at AS createdAt
        FROM members
       WHERE id = ?`,

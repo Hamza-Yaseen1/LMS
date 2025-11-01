@@ -19,6 +19,8 @@ export async function GET(_req: NextRequest, ctx: Ctx) {
             email,
             phone,
             address,
+            department,
+            semester,
             created_at AS createdAt
        FROM members
       WHERE id = ?`,

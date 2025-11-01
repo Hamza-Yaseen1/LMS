@@ -7,13 +7,15 @@ type Member = {
   email?: string | null;
   phone?: string | null;
   address?: string | null;
+  department?: string | null;
+  semester?: string | null;
   createdAt: string;
 };
 
 export default function MembersPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ fullName: "", email: "", phone: "", address: "" });
+  const [form, setForm] = useState({ fullName: "", email: "", phone: "", address: "", department: "", semester: "" });
 
   async function refresh() {
     setLoading(true);
@@ -32,7 +34,7 @@ export default function MembersPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
     });
-    setForm({ fullName: "", email: "", phone: "", address: "" });
+    setForm({ fullName: "", email: "", phone: "", address: "", department: "", semester: "" });
     refresh();
   }
 
@@ -50,6 +52,8 @@ export default function MembersPage() {
         <input className="border rounded p-2" placeholder="Email" value={form.email} onChange={e=>setForm(s=>({ ...s, email: e.target.value }))} />
         <input className="border rounded p-2" placeholder="Phone" value={form.phone} onChange={e=>setForm(s=>({ ...s, phone: e.target.value }))} />
         <input className="border rounded p-2" placeholder="Address" value={form.address} onChange={e=>setForm(s=>({ ...s, address: e.target.value }))} />
+        <input className="border rounded p-2" placeholder="Department" value={form.department} onChange={e=>setForm(s=>({ ...s, department: e.target.value }))} />
+        <input className="border rounded p-2" placeholder="Semester" value={form.semester} onChange={e=>setForm(s=>({ ...s, semester: e.target.value }))} />
         <button className="md:col-span-4 bg-black text-white rounded p-2">Add Member</button>
       </form>
 
@@ -63,6 +67,7 @@ export default function MembersPage() {
               <th className="p-2 border">Name</th>
               <th className="p-2 border">Email</th>
               <th className="p-2 border">Phone</th>
+              
               <th className="p-2 border">Actions</th>
             </tr>
           </thead>
