@@ -53,7 +53,7 @@ export default function LoginPage() {
         </button>
       </form>
       <p className="mt-4 text-sm text-gray-500">
-        Only admin-created users can log in.
+        Only admin-created users can log in LMS.
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold tracking-tight">Library Management System</h1>
       </div>
       <p className="max-w-xl text-slate-600 mb-8">
-        A simple Next.js + MySQL app to manage books, members, and issue records. Developed by HAMZA — because every library deserves clean code.
+        A simple Next.js + MySQL app to manage books, members, and issue records. Developed by Amir Aslam — because every library deserves clean code.
       </p>
       <Link
         href="/books"
